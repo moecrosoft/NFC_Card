@@ -68,9 +68,11 @@ export default function MainPage() {
 
   return (
     <div className="w-screen h-screen bg-black flex justify-center items-center">
+
       {/* Scaling wrapper to shrink content proportionally */}
-      <div className="w-full max-w-md flex flex-col justify-between items-center px-4 py-4 sm:py-6" style={{ transform: 'scale(0.95)', transformOrigin: 'top center' }}>
-        
+      <div className="w-full max-w-md flex flex-col justify-between items-center px-4 py-4 sm:py-6" 
+           style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}>
+
         {/* Top Text & Logo */}
         <div className="flex items-center justify-center w-full mb-6">
           <img
