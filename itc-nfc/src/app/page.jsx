@@ -21,12 +21,12 @@ export default function MainPage() {
 
   const prevClaimedCount = useRef(null);
 
-  // Lock scrolling
+  // Prevent scrolling
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden"; // lock scroll
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = originalOverflow; // restore on unmount
+      document.body.style.overflow = originalOverflow;
     };
   }, []);
 
@@ -65,48 +65,44 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen max-h-[100dvh] bg-black flex flex-col justify-between items-center px-4 py-6 text-white overflow-hidden">
+    <div className="flex-center-column">
 
       {/* Top */}
-      <div className="flex items-center justify-center w-full max-w-md mt-4 sm:mt-0 mb-3">
+      <div className="flex items-center justify-center w-full max-w-md mt-4 mb-2">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-14 w-14 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
+          className="h-16 w-16 sm:h-14 sm:w-14 rounded-lg object-cover border-2"
         />
         <div className="ml-3 text-center">
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
+          <div className="text-3xl sm:text-2xl font-extrabold leading-tight text-red-600">
             ITC Project Showcase
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
+          <div className="text-3xl sm:text-2xl font-extrabold leading-tight text-red-600 mt-1">
             Stamp Card
           </div>
         </div>
       </div>
 
-      {/* Card */}
+      {/* Middle Card */}
       <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center px-4 py-4 sm:px-5 sm:py-5">
         <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const size = "w-[115px] sm:w-[135px] aspect-square";
+            const size = "w-[120px] sm:w-[135px] aspect-square";
 
             const circle = (
-              <div
-                className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 transition-transform hover:scale-105 ${size}`}
-              >
+              <div className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 transition-transform hover:scale-105 ${size}`}>
                 {isClaimed ? (
                   <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-white font-bold text-xl sm:text-2xl">
-                    {stamp.id}
-                  </span>
+                  <span className="text-white font-bold text-2xl sm:text-xl">{stamp.id}</span>
                 )}
               </div>
             );
 
             return (
-              <div key={stamp.id} className={stamp.id === 7 ? "col-span-2 flex justify-center" : ""}>
+              <div key={stamp.id} className={stamp.id === 7 ? "col-span-2" : ""}>
                 {isClaimed ? (
                   <Link href={groupLinks[stamp.id]} target="_blank" rel="noopener noreferrer">
                     {circle}
@@ -121,15 +117,12 @@ export default function MainPage() {
       </div>
 
       {/* Bottom */}
-      <div
-        className={`text-center leading-snug text-lg sm:text-xl mt-3 mb-2 sm:mb-0 font-bold ${
-          allClaimed ? "text-green-500" : "text-white"
-        }`}
-      >
+      <div className={`text-center leading-snug text-xl sm:text-lg mt-2 mb-4 font-bold ${allClaimed ? "text-green-500" : "text-white"}`}>
         Unlock 5 stamps → Go to Exco table
         <br />
         → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
       </div>
+
     </div>
   );
 }

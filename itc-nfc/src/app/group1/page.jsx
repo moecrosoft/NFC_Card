@@ -8,28 +8,18 @@ export default function GroupPage() {
   const router = useRouter();
   const [claimed, setClaimed] = useState(false);
 
-  const groupId = 1; // change for each group (1-7)
+  const groupId = 1; // change per group
   const groupImage = `/stamps/${groupId}.png`;
 
-  // Confetti colors for each group
   const confettiColors = {
-    1: ["#22c55e", "#bef264"], // green
-    2: ["#3b82f6", "#60a5fa"], // blue
-    3: ["#facc15", "#fde68a"], // yellow
-    4: ["#f87171", "#fca5a5"], // red/pink
-    5: ["#a78bfa", "#c4b5fd"], // purple
-    6: ["#f472b6", "#f9a8d4"], // pink
-    7: ["#ec4899", "#f43f5e"], // magenta
+    1: ["#22c55e", "#bef264"],
+    2: ["#3b82f6", "#60a5fa"],
+    3: ["#facc15", "#fde68a"],
+    4: ["#f87171", "#fca5a5"],
+    5: ["#a78bfa", "#c4b5fd"],
+    6: ["#f472b6", "#f9a8d4"],
+    7: ["#ec4899", "#f43f5e"],
   };
-
-  // Lock page scrolling
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden"; // lock scrolling
-    return () => {
-      document.body.style.overflow = originalOverflow; // restore on unmount
-    };
-  }, []);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
@@ -49,46 +39,30 @@ export default function GroupPage() {
     window.localStorage.setItem("stamps", JSON.stringify(stamps));
     setClaimed(true);
 
-    // Trigger confetti for this group
-    confetti({
-      particleCount: 150,
-      spread: 90,
-      origin: { y: 0.6 },
-      colors: confettiColors[groupId] || ["#ffffff"],
-      shapes: ["circle", "square"],
-    });
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 }, colors: confettiColors[groupId] });
 
-    // Redirect after short delay
     setTimeout(() => router.push("/"), 800);
   };
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-center items-center px-4 text-white">
-
-      {/* Top Text */}
-      <h1 className="text-4xl sm:text-5xl font-bold text-red-600 text-center mb-8">
+    <div className="flex-center-column">
+      <h1 className="text-4xl sm:text-3xl font-bold text-center text-red-600 mb-8">
         You received Group {groupId} <br /> Stamp!
       </h1>
 
-      {/* Circle with stamp image */}
-      <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden mb-8 bg-gray-700 flex items-center justify-center">
-        <img
-          src={groupImage}
-          alt={`Stamp ${groupId}`}
-          className="w-full h-full object-cover"
-        />
+      <div className="w-48 h-48 rounded-full overflow-hidden bg-gray-700 mb-8">
+        <img src={groupImage} alt={`Stamp ${groupId}`} className="w-full h-full object-cover" />
       </div>
 
-      {/* Claim Button / Claimed Text */}
       {!claimed ? (
         <button
           onClick={handleClaim}
-          className="bg-red-600 hover:bg-red-700 text-black text-2xl sm:text-3xl font-bold py-4 px-16 sm:px-20 rounded-2xl transition-colors cursor-pointer"
+          className="bg-red-600 hover:bg-red-700 text-black text-2xl font-bold py-4 px-16 rounded-2xl transition-colors cursor-pointer"
         >
           CLAIM
         </button>
       ) : (
-        <p className="text-red-600 font-bold text-2xl sm:text-3xl mt-2">Stamp Claimed!</p>
+        <p className="text-red-600 font-bold text-2xl">Stamp Claimed!</p>
       )}
     </div>
   );
