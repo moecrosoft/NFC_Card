@@ -60,30 +60,69 @@ export default function MainPage() {
   }, [stamps]);
 
   const triggerGrandConfetti = () => {
-    const colors = ["#22c55e", "#3b82f6", "#facc15", "#f87171", "#a78bfa", "#f472b6", "#ec4899"];
+    const colors = [
+      "#22c55e",
+      "#3b82f6",
+      "#facc15",
+      "#f87171",
+      "#a78bfa",
+      "#f472b6",
+      "#ec4899",
+    ];
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors });
-    setTimeout(() => confetti({ particleCount: 120, spread: 100, origin: { x: 0.3, y: 0.6 }, colors }), 300);
-    setTimeout(() => confetti({ particleCount: 120, spread: 100, origin: { x: 0.7, y: 0.6 }, colors }), 600);
-    setTimeout(() => confetti({ particleCount: 150, spread: 120, origin: { y: 0.6 }, colors }), 900);
+    setTimeout(
+      () =>
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { x: 0.3, y: 0.6 },
+          colors,
+        }),
+      300
+    );
+    setTimeout(
+      () =>
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { x: 0.7, y: 0.6 },
+          colors,
+        }),
+      600
+    );
+    setTimeout(
+      () =>
+        confetti({
+          particleCount: 150,
+          spread: 120,
+          origin: { y: 0.6 },
+          colors,
+        }),
+      900
+    );
   };
 
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white">
+    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 py-6 text-white">
 
       {/* Top Text & Logo */}
-      <div className="flex items-center justify-center w-full max-w-md mt-6 sm:mt-0 mb-4">
+      <div className="flex items-center justify-center w-full max-w-md mt-8 sm:mt-0 mb-4">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-14 w-14 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
+          className="h-16 w-16 sm:h-16 sm:w-16 rounded-lg object-cover border-2
+                     md:h-16 md:w-16
+                     xs:h-20 xs:w-20" // slightly bigger on small/mobile screens
         />
         <div className="flex flex-col justify-center ml-3">
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
+          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600
+                          xs:text-3xl"> {/* slightly larger on mobile */}
             ITC Project Showcase
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5">
+          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5
+                          xs:text-3xl"> {/* slightly larger on mobile */}
             Stamp Card
           </div>
         </div>
@@ -94,22 +133,39 @@ export default function MainPage() {
         <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const circleSizeClass = "w-[120px] sm:w-[135px] aspect-square";
+            const circleSizeClass = "w-[110px] sm:w-[135px] aspect-square";
 
             const stampCircle = (
-              <div className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${circleSizeClass}`}>
+              <div
+                className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${circleSizeClass}`}
+              >
                 {isClaimed ? (
-                  <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
+                  <img
+                    src={stamp.image}
+                    alt={`Stamp ${stamp.id}`}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <span className="text-white font-bold text-lg sm:text-2xl">{stamp.id}</span>
+                  <span className="text-white font-bold text-lg sm:text-2xl">
+                    {stamp.id}
+                  </span>
                 )}
               </div>
             );
 
             return (
-              <div key={stamp.id} className={`flex items-center justify-center ${stamp.id === 7 ? "col-span-2" : ""}`}>
+              <div
+                key={stamp.id}
+                className={`flex items-center justify-center ${
+                  stamp.id === 7 ? "col-span-2" : ""
+                }`}
+              >
                 {isClaimed ? (
-                  <Link href={groupLinks[stamp.id]} target="_blank" rel="noopener noreferrer">
+                  <Link
+                    href={groupLinks[stamp.id]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {stampCircle}
                   </Link>
                 ) : (
@@ -122,7 +178,11 @@ export default function MainPage() {
       </div>
 
       {/* Bottom Text */}
-      <div className={`text-center leading-snug text-lg sm:text-xl mt-4 mb-6 sm:mt-4 sm:mb-0 font-bold ${allClaimed ? "text-green-500" : "text-white"}`}>
+      <div
+        className={`text-center leading-snug text-lg sm:text-xl mt-4 mb-8 sm:mt-4 sm:mb-0 font-bold ${
+          allClaimed ? "text-green-500" : "text-white"
+        }`}
+      >
         <span>Unlock 5 stamps → Go to Exco table</span>
         <br />
         <span>
