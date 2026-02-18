@@ -21,6 +21,15 @@ export default function MainPage() {
 
   const prevClaimedCount = useRef(null);
 
+  // Lock scrolling
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden"; // lock page
+    return () => {
+      document.body.style.overflow = originalOverflow; // restore on unmount
+    };
+  }, []);
+
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -61,7 +70,7 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen min-h-screen bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white">
+    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white">
 
       {/* Top Text & Logo */}
       <div className="flex items-center justify-center w-full max-w-md mt-6 sm:mt-0 mb-4">

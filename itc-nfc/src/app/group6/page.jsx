@@ -22,6 +22,15 @@ export default function GroupPage() {
     7: ["#ec4899", "#f43f5e"], // magenta
   };
 
+  // Lock page scrolling
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden"; // lock scrolling
+    return () => {
+      document.body.style.overflow = originalOverflow; // restore on unmount
+    };
+  }, []);
+
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -54,32 +63,33 @@ export default function GroupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <div className="flex flex-col items-center w-full max-w-md">
-        <h1 className="text-4xl font-bold text-center mb-12 text-red-600">
-          You received Group {groupId} <br /> Stamp!
-        </h1>
+    <div className="w-screen h-screen bg-black flex flex-col justify-center items-center px-4 text-white">
 
-        {/* Circle with stamp image */}
-        <div className="w-48 h-48 rounded-full overflow-hidden mb-12 bg-gray-700">
-          <img
-            src={groupImage}
-            alt={`Stamp ${groupId}`}
-            className="w-full h-full object-cover"
-          />
-        </div>
+      {/* Top Text */}
+      <h1 className="text-4xl sm:text-5xl font-bold text-red-600 text-center mb-8">
+        You received Group {groupId} <br /> Stamp!
+      </h1>
 
-        {!claimed ? (
-          <button
-            onClick={handleClaim}
-            className="bg-red-600 hover:bg-red-700 text-black text-2xl font-bold py-4 px-16 rounded-2xl transition-colors cursor-pointer"
-          >
-            CLAIM
-          </button>
-        ) : (
-          <p className="text-red-600 font-bold text-2xl">Stamp Claimed!</p>
-        )}
+      {/* Circle with stamp image */}
+      <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden mb-8 bg-gray-700 flex items-center justify-center">
+        <img
+          src={groupImage}
+          alt={`Stamp ${groupId}`}
+          className="w-full h-full object-cover"
+        />
       </div>
+
+      {/* Claim Button / Claimed Text */}
+      {!claimed ? (
+        <button
+          onClick={handleClaim}
+          className="bg-red-600 hover:bg-red-700 text-black text-2xl sm:text-3xl font-bold py-4 px-16 sm:px-20 rounded-2xl transition-colors cursor-pointer"
+        >
+          CLAIM
+        </button>
+      ) : (
+        <p className="text-red-600 font-bold text-2xl sm:text-3xl mt-2">Stamp Claimed!</p>
+      )}
     </div>
   );
 }
