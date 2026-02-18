@@ -70,7 +70,7 @@ export default function MainPage() {
       {/* Scaling wrapper to shrink content proportionally and align near top */}
       <div
         className="w-full max-w-md flex flex-col justify-between items-center px-4 pt-6 pb-4"
-        style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}
+        style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}
       >
 
         {/* Top Text & Logo */}
@@ -98,9 +98,7 @@ export default function MainPage() {
               const sizeClass = "w-[120px] sm:w-[135px] aspect-square";
 
               const circle = (
-                <div
-                  className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${sizeClass}`}
-                >
+                <div className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${sizeClass}`}>
                   {isClaimed ? (
                     <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
                   ) : (
