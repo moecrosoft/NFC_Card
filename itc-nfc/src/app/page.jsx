@@ -19,7 +19,7 @@ export default function MainPage() {
     7: "https://group7-website.com",
   };
 
-  const prevClaimedCount = useRef<number | null>(null);
+  const prevClaimedCount = useRef(null);
 
   // Lock scrolling
   useEffect(() => {
