@@ -24,9 +24,9 @@ export default function MainPage() {
   // Lock scrolling
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden"; 
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = originalOverflow; 
+      document.body.style.overflow = originalOverflow;
     };
   }, []);
 
@@ -65,42 +65,38 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-[100dvh] bg-black flex flex-col justify-between items-center px-4 py-4 text-white">
+    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-6 pt-6 pb-6 text-white overflow-hidden">
 
-      {/* Top */}
-      <div className="flex items-center justify-center w-full max-w-md mt-2 mb-2 sm:mt-4 sm:mb-3">
+      {/* Top Text & Logo */}
+      <div className="flex items-center justify-center w-full max-w-md mt-6 mb-6">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-[10vw] min-h-[40px] max-h-[60px] w-auto sm:h-16 rounded-lg object-cover border-2"
+          className="h-16 w-16 rounded-xl object-cover"
         />
-        <div className="ml-3 text-center">
-          <div className="text-[4vw] sm:text-3xl font-extrabold leading-tight text-red-600">
+        <div className="flex flex-col justify-center ml-4">
+          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center">
             ITC Project Showcase
           </div>
-          <div className="text-[4vw] sm:text-3xl font-extrabold leading-tight text-red-600">
+          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5">
             Stamp Card
           </div>
         </div>
       </div>
 
-      {/* Card */}
-      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center px-4 py-2 sm:px-5 sm:py-5">
-        <div className="grid grid-cols-2 gap-[2vw] w-full place-items-center">
+      {/* Stamp Card Container */}
+      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center p-5">
+        <div className="grid grid-cols-2 gap-3 w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const size = "w-[18vw] min-w-[60px] max-w-[120px] aspect-square";
+            const sizeClass = "w-[120px] sm:w-[135px] aspect-square";
 
             const circle = (
-              <div
-                className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 transition-transform hover:scale-105 ${size}`}
-              >
+              <div className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${sizeClass}`}>
                 {isClaimed ? (
                   <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-white font-bold text-[4vw] sm:text-2xl">
-                    {stamp.id}
-                  </span>
+                  <span className="text-white font-bold text-xl sm:text-2xl">{stamp.id}</span>
                 )}
               </div>
             );
@@ -120,9 +116,9 @@ export default function MainPage() {
         </div>
       </div>
 
-      {/* Bottom */}
+      {/* Bottom Text */}
       <div
-        className={`text-center leading-snug font-bold text-[4vw] sm:text-xl mt-2 mb-2 sm:mt-4 sm:mb-0 ${
+        className={`text-center leading-snug text-lg sm:text-xl mt-4 mb-4 font-bold ${
           allClaimed ? "text-green-500" : "text-white"
         }`}
       >
@@ -130,7 +126,6 @@ export default function MainPage() {
         <br />
         → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
       </div>
-
     </div>
   );
 }
