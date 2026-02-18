@@ -27,9 +27,7 @@ export default function MainPage() {
       try {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) setStamps(parsed);
-      } catch {
-        console.error("Invalid stamps in localStorage");
-      }
+      } catch {}
     }
   }, []);
 
@@ -51,108 +49,51 @@ export default function MainPage() {
   }, [stamps]);
 
   const triggerGrandConfetti = () => {
-    const colors = [
-      "#22c55e",
-      "#3b82f6",
-      "#facc15",
-      "#f87171",
-      "#a78bfa",
-      "#f472b6",
-      "#ec4899",
-    ];
-    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors });
-    setTimeout(
-      () =>
-        confetti({
-          particleCount: 120,
-          spread: 100,
-          origin: { x: 0.3, y: 0.6 },
-          colors,
-        }),
-      300
-    );
-    setTimeout(
-      () =>
-        confetti({
-          particleCount: 120,
-          spread: 100,
-          origin: { x: 0.7, y: 0.6 },
-          colors,
-        }),
-      600
-    );
-    setTimeout(
-      () =>
-        confetti({
-          particleCount: 150,
-          spread: 120,
-          origin: { y: 0.6 },
-          colors,
-        }),
-      900
-    );
+    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
   };
 
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 py-2 text-white">
+    <div className="w-screen h-[100dvh] bg-black flex flex-col items-center justify-between px-4 py-2 text-white overflow-hidden">
 
-      {/* Top Text & Logo */}
-      <div className="flex items-center justify-center w-full max-w-md mt-[2vh] mb-[2vh]">
+      {/* Top */}
+      <div className="flex items-center justify-center w-full max-w-md mt-1">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-[8vh] w-[8vh] sm:h-16 sm:w-16 rounded-lg object-cover border-2"
+          className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
         />
-        <div className="flex flex-col justify-center ml-3">
-          <div className="text-[3vh] sm:text-3xl font-extrabold leading-tight text-red-600">
+        <div className="flex flex-col ml-3 leading-tight">
+          <div className="text-lg sm:text-3xl font-extrabold text-red-600">
             ITC Project Showcase
           </div>
-          <div className="text-[3vh] sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5">
+          <div className="text-lg sm:text-3xl font-extrabold text-red-600">
             Stamp Card
           </div>
         </div>
       </div>
 
-      {/* Stamp Card Container */}
-      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center p-[2vh] sm:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-2 gap-[2vh] sm:gap-4 w-full place-items-center">
+      {/* Stamp Card */}
+      <div className="bg-neutral-900 rounded-2xl w-full max-w-md p-3 sm:p-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const circleSizeClass = "w-[15vh] sm:w-[135px] aspect-square";
 
             const stampCircle = (
-              <div
-                className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${circleSizeClass}`}
-              >
+              <div className="w-[22vw] max-w-[120px] aspect-square rounded-full bg-gray-400 flex items-center justify-center overflow-hidden hover:scale-105 transition">
                 {isClaimed ? (
-                  <img
-                    src={stamp.image}
-                    alt={`Stamp ${stamp.id}`}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={stamp.image} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-white font-bold text-[2vh] sm:text-2xl">
-                    {stamp.id}
-                  </span>
+                  <span className="font-bold text-lg">{stamp.id}</span>
                 )}
               </div>
             );
 
             return (
-              <div
-                key={stamp.id}
-                className={`flex items-center justify-center ${
-                  stamp.id === 7 ? "col-span-2" : ""
-                }`}
-              >
+              <div key={stamp.id} className={stamp.id === 7 ? "col-span-2" : ""}>
                 {isClaimed ? (
-                  <Link
-                    href={groupLinks[stamp.id]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <Link href={groupLinks[stamp.id]} target="_blank">
                     {stampCircle}
                   </Link>
                 ) : (
@@ -164,19 +105,16 @@ export default function MainPage() {
         </div>
       </div>
 
-      {/* Bottom Text */}
+      {/* Bottom */}
       <div
-        className={`text-center leading-snug text-[2.5vh] sm:text-xl mt-[2vh] mb-[2vh] font-bold ${
+        className={`text-center text-sm sm:text-xl font-bold leading-snug ${
           allClaimed ? "text-green-500" : "text-white"
         }`}
       >
-        <span>Unlock 5 stamps → Go to Exco table</span>
+        Unlock 5 stamps → Go to Exco table  
         <br />
-        <span>
-          → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
-        </span>
+        → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
       </div>
-
     </div>
   );
 }
