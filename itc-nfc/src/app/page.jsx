@@ -24,9 +24,9 @@ export default function MainPage() {
   // Lock scrolling
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; // lock scroll
     return () => {
-      document.body.style.overflow = originalOverflow;
+      document.body.style.overflow = originalOverflow; // restore on unmount
     };
   }, []);
 
@@ -65,14 +65,14 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white overflow-hidden">
+    <div className="w-screen min-h-[100dvh] bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white overflow-hidden">
 
       {/* Top */}
       <div className="flex items-center justify-center w-full max-w-md mt-4 sm:mt-0 mb-3">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-14 w-14 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
+          className="h-16 w-16 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
         />
         <div className="ml-3 text-center">
           <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
@@ -106,7 +106,7 @@ export default function MainPage() {
             );
 
             return (
-              <div key={stamp.id} className={stamp.id === 7 ? "col-span-2" : ""}>
+              <div key={stamp.id} className={stamp.id === 7 ? "col-span-2 flex justify-center" : ""}>
                 {isClaimed ? (
                   <Link href={groupLinks[stamp.id]} target="_blank" rel="noopener noreferrer">
                     {circle}
