@@ -21,6 +21,15 @@ export default function MainPage() {
 
   const prevClaimedCount = useRef(null);
 
+  // Lock scrolling
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden"; 
+    return () => {
+      document.body.style.overflow = originalOverflow; 
+    };
+  }, []);
+
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -49,44 +58,49 @@ export default function MainPage() {
   }, [stamps]);
 
   const triggerGrandConfetti = () => {
-    const colors = ["#22c55e","#3b82f6","#facc15","#f87171","#a78bfa","#f472b6","#ec4899"];
+    const colors = ["#22c55e", "#3b82f6", "#facc15", "#f87171", "#a78bfa", "#f472b6", "#ec4899"];
     confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 }, colors });
   };
 
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen min-h-[100dvh] bg-black flex flex-col justify-between items-center px-4 py-4 sm:py-6 text-white">
+    <div className="w-screen h-[100dvh] bg-black flex flex-col justify-between items-center px-4 py-4 text-white">
+
       {/* Top */}
-      <div className="flex items-center justify-center w-full max-w-md mt-4 sm:mt-0 mb-4">
+      <div className="flex items-center justify-center w-full max-w-md mt-2 mb-2 sm:mt-4 sm:mb-3">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-16 w-16 sm:h-14 sm:w-14 rounded-lg object-cover border-2"
+          className="h-[10vw] min-h-[40px] max-h-[60px] w-auto sm:h-16 rounded-lg object-cover border-2"
         />
         <div className="ml-3 text-center">
-          <div className="text-3xl sm:text-2xl font-extrabold leading-tight text-red-600">
+          <div className="text-[4vw] sm:text-3xl font-extrabold leading-tight text-red-600">
             ITC Project Showcase
           </div>
-          <div className="text-3xl sm:text-2xl font-extrabold leading-tight text-red-600 mt-0.5">
+          <div className="text-[4vw] sm:text-3xl font-extrabold leading-tight text-red-600">
             Stamp Card
           </div>
         </div>
       </div>
 
-      {/* Stamp Card Container */}
-      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center px-4 py-4 sm:px-5 sm:py-5">
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full place-items-center">
+      {/* Card */}
+      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center px-4 py-2 sm:px-5 sm:py-5">
+        <div className="grid grid-cols-2 gap-[2vw] w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const sizeClass = "w-[100px] sm:w-[135px] aspect-square";
+            const size = "w-[18vw] min-w-[60px] max-w-[120px] aspect-square";
 
             const circle = (
-              <div className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 hover:scale-105 transition-transform ${sizeClass}`}>
+              <div
+                className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 transition-transform hover:scale-105 ${size}`}
+              >
                 {isClaimed ? (
                   <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-white font-bold text-xl sm:text-2xl">{stamp.id}</span>
+                  <span className="text-white font-bold text-[4vw] sm:text-2xl">
+                    {stamp.id}
+                  </span>
                 )}
               </div>
             );
@@ -107,11 +121,16 @@ export default function MainPage() {
       </div>
 
       {/* Bottom */}
-      <div className={`text-center leading-snug text-lg sm:text-xl mt-4 mb-4 font-bold ${allClaimed ? "text-green-500" : "text-white"}`}>
+      <div
+        className={`text-center leading-snug font-bold text-[4vw] sm:text-xl mt-2 mb-2 sm:mt-4 sm:mb-0 ${
+          allClaimed ? "text-green-500" : "text-white"
+        }`}
+      >
         Unlock 5 stamps → Go to Exco table
         <br />
         → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
       </div>
+
     </div>
   );
 }
