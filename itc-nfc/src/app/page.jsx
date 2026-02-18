@@ -21,15 +21,6 @@ export default function MainPage() {
 
   const prevClaimedCount = useRef(null);
 
-  // Lock scrolling
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden"; // lock page
-    return () => {
-      document.body.style.overflow = originalOverflow; // restore on unmount
-    };
-  }, []);
-
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -105,35 +96,31 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 py-6 text-white">
+    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 py-2 text-white">
 
       {/* Top Text & Logo */}
-      <div className="flex items-center justify-center w-full max-w-md mt-8 sm:mt-0 mb-4">
+      <div className="flex items-center justify-center w-full max-w-md mt-[2vh] mb-[2vh]">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-16 w-16 sm:h-16 sm:w-16 rounded-lg object-cover border-2
-                     md:h-16 md:w-16
-                     xs:h-20 xs:w-20" // slightly bigger on small/mobile screens
+          className="h-[8vh] w-[8vh] sm:h-16 sm:w-16 rounded-lg object-cover border-2"
         />
         <div className="flex flex-col justify-center ml-3">
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600
-                          xs:text-3xl"> {/* slightly larger on mobile */}
+          <div className="text-[3vh] sm:text-3xl font-extrabold leading-tight text-red-600">
             ITC Project Showcase
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5
-                          xs:text-3xl"> {/* slightly larger on mobile */}
+          <div className="text-[3vh] sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5">
             Stamp Card
           </div>
         </div>
       </div>
 
       {/* Stamp Card Container */}
-      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center p-4 sm:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 w-full place-items-center">
+      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center p-[2vh] sm:p-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-[2vh] sm:gap-4 w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const circleSizeClass = "w-[110px] sm:w-[135px] aspect-square";
+            const circleSizeClass = "w-[15vh] sm:w-[135px] aspect-square";
 
             const stampCircle = (
               <div
@@ -146,7 +133,7 @@ export default function MainPage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-white font-bold text-lg sm:text-2xl">
+                  <span className="text-white font-bold text-[2vh] sm:text-2xl">
                     {stamp.id}
                   </span>
                 )}
@@ -179,7 +166,7 @@ export default function MainPage() {
 
       {/* Bottom Text */}
       <div
-        className={`text-center leading-snug text-lg sm:text-xl mt-4 mb-8 sm:mt-4 sm:mb-0 font-bold ${
+        className={`text-center leading-snug text-[2.5vh] sm:text-xl mt-[2vh] mb-[2vh] font-bold ${
           allClaimed ? "text-green-500" : "text-white"
         }`}
       >
