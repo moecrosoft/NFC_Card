@@ -21,6 +21,15 @@ export default function MainPage() {
 
   const prevClaimedCount = useRef(null);
 
+  // Lock scrolling
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -49,43 +58,49 @@ export default function MainPage() {
   }, [stamps]);
 
   const triggerGrandConfetti = () => {
-    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+    const colors = ["#22c55e", "#3b82f6", "#facc15", "#f87171", "#a78bfa", "#f472b6", "#ec4899"];
+    confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 }, colors });
   };
 
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-[100dvh] bg-black flex flex-col items-center justify-between px-4 py-2 text-white overflow-hidden">
+    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white overflow-hidden">
 
       {/* Top */}
-      <div className="flex items-center justify-center w-full max-w-md mt-1">
+      <div className="flex items-center justify-center w-full max-w-md mt-4 sm:mt-0 mb-3">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-12 w-12 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
+          className="h-14 w-14 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
         />
-        <div className="flex flex-col ml-3 leading-tight">
-          <div className="text-lg sm:text-3xl font-extrabold text-red-600">
+        <div className="ml-3 text-center">
+          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
             ITC Project Showcase
           </div>
-          <div className="text-lg sm:text-3xl font-extrabold text-red-600">
+          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
             Stamp Card
           </div>
         </div>
       </div>
 
-      {/* Stamp Card */}
-      <div className="bg-neutral-900 rounded-2xl w-full max-w-md p-3 sm:p-5">
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 place-items-center">
+      {/* Card */}
+      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center px-4 py-4 sm:px-5 sm:py-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
+            const size = "w-[115px] sm:w-[135px] aspect-square";
 
-            const stampCircle = (
-              <div className="w-[22vw] max-w-[120px] aspect-square rounded-full bg-gray-400 flex items-center justify-center overflow-hidden hover:scale-105 transition">
+            const circle = (
+              <div
+                className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 transition-transform hover:scale-105 ${size}`}
+              >
                 {isClaimed ? (
-                  <img src={stamp.image} className="w-full h-full object-cover" />
+                  <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="font-bold text-lg">{stamp.id}</span>
+                  <span className="text-white font-bold text-xl sm:text-2xl">
+                    {stamp.id}
+                  </span>
                 )}
               </div>
             );
@@ -93,11 +108,11 @@ export default function MainPage() {
             return (
               <div key={stamp.id} className={stamp.id === 7 ? "col-span-2" : ""}>
                 {isClaimed ? (
-                  <Link href={groupLinks[stamp.id]} target="_blank">
-                    {stampCircle}
+                  <Link href={groupLinks[stamp.id]} target="_blank" rel="noopener noreferrer">
+                    {circle}
                   </Link>
                 ) : (
-                  stampCircle
+                  circle
                 )}
               </div>
             );
@@ -107,11 +122,11 @@ export default function MainPage() {
 
       {/* Bottom */}
       <div
-        className={`text-center text-sm sm:text-xl font-bold leading-snug ${
+        className={`text-center leading-snug text-lg sm:text-xl mt-3 mb-2 sm:mb-0 font-bold ${
           allClaimed ? "text-green-500" : "text-white"
         }`}
       >
-        Unlock 5 stamps → Go to Exco table  
+        Unlock 5 stamps → Go to Exco table
         <br />
         → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
       </div>
