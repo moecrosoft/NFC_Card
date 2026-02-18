@@ -19,7 +19,7 @@ export default function MainPage() {
     7: "https://group7-website.com",
   };
 
-  const prevClaimedCount = useRef(null);
+  const prevClaimedCount = useRef<number | null>(null);
 
   // Lock scrolling
   useEffect(() => {
@@ -65,14 +65,14 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen min-h-[100dvh] bg-black flex flex-col justify-between items-center px-4 pt-6 pb-6 text-white overflow-hidden">
+    <div className="w-screen max-h-[100dvh] bg-black flex flex-col justify-between items-center px-4 py-6 text-white overflow-hidden">
 
       {/* Top */}
       <div className="flex items-center justify-center w-full max-w-md mt-4 sm:mt-0 mb-3">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-16 w-16 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
+          className="h-14 w-14 sm:h-16 sm:w-16 rounded-lg object-cover border-2"
         />
         <div className="ml-3 text-center">
           <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600">
