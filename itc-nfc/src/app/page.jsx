@@ -9,6 +9,8 @@ export default function MainPage() {
     Array.from({ length: 7 }, (_, i) => ({ id: i + 1, image: null }))
   );
 
+  const [viewportHeight, setViewportHeight] = useState(0);
+
   const groupLinks = {
     1: "https://www.youtube.com",
     2: "https://www.tiktok.com",
@@ -23,13 +25,21 @@ export default function MainPage() {
 
   // Lock scrolling
   useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = originalOverflow;
+      document.body.style.overflow = "auto";
     };
   }, []);
 
+  // Set dynamic viewport height
+  useEffect(() => {
+    const updateHeight = () => setViewportHeight(window.innerHeight);
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
+
+  // Load stamps from localStorage
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -40,6 +50,7 @@ export default function MainPage() {
     }
   }, []);
 
+  // Trigger grand confetti when all claimed
   useEffect(() => {
     const claimedCount = stamps.filter((s) => s.image).length;
     const confettiPlayed = window.localStorage.getItem("grandConfettiPlayed");
@@ -58,45 +69,63 @@ export default function MainPage() {
   }, [stamps]);
 
   const triggerGrandConfetti = () => {
-    const colors = ["#22c55e", "#3b82f6", "#facc15", "#f87171", "#a78bfa", "#f472b6", "#ec4899"];
+    const colors = [
+      "#22c55e",
+      "#3b82f6",
+      "#facc15",
+      "#f87171",
+      "#a78bfa",
+      "#f472b6",
+      "#ec4899",
+    ];
     confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 }, colors });
   };
 
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-between items-center px-6 pt-6 pb-6 text-white overflow-hidden">
-
-      {/* Top Text & Logo */}
-      <div className="flex items-center justify-center w-full max-w-md mt-6 mb-6">
+    <div
+      style={{ height: `${viewportHeight}px` }}
+      className="w-screen bg-black flex flex-col justify-between items-center px-4 py-6 text-white"
+    >
+      {/* Top Logo & Text */}
+      <div className="flex items-center justify-center w-full max-w-md mb-4">
         <img
           src="/itc.png"
           alt="ITC Logo"
-          className="h-16 w-16 rounded-xl object-cover"
+          className="h-16 w-16 rounded-lg object-cover border-2"
         />
-        <div className="flex flex-col justify-center ml-4">
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center">
+        <div className="flex flex-col justify-center ml-4 text-center">
+          <div className="text-3xl font-extrabold leading-tight text-red-600">
             ITC Project Showcase
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold leading-tight text-red-600 text-center mt-0.5">
+          <div className="text-2xl font-extrabold leading-tight text-red-600 mt-0.5">
             Stamp Card
           </div>
         </div>
       </div>
 
       {/* Stamp Card Container */}
-      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center p-5">
+      <div className="bg-neutral-900 rounded-2xl w-full max-w-md flex flex-col items-center p-4">
         <div className="grid grid-cols-2 gap-3 w-full place-items-center">
           {stamps.map((stamp) => {
             const isClaimed = !!stamp.image;
-            const sizeClass = "w-[120px] sm:w-[135px] aspect-square";
+            const size = "w-[120px] sm:w-[135px] aspect-square";
 
             const circle = (
-              <div className={`rounded-full flex items-center justify-center overflow-hidden bg-gray-400 cursor-pointer hover:scale-105 transition-transform ${sizeClass}`}>
+              <div
+                className={`rounded-lg flex items-center justify-center overflow-hidden bg-gray-400 transition-transform hover:scale-105 ${size}`}
+              >
                 {isClaimed ? (
-                  <img src={stamp.image} alt={`Stamp ${stamp.id}`} className="w-full h-full object-cover" />
+                  <img
+                    src={stamp.image}
+                    alt={`Stamp ${stamp.id}`}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <span className="text-white font-bold text-xl sm:text-2xl">{stamp.id}</span>
+                  <span className="text-white font-bold text-2xl sm:text-3xl">
+                    {stamp.id}
+                  </span>
                 )}
               </div>
             );
@@ -104,7 +133,11 @@ export default function MainPage() {
             return (
               <div key={stamp.id} className={stamp.id === 7 ? "col-span-2" : ""}>
                 {isClaimed ? (
-                  <Link href={groupLinks[stamp.id]} target="_blank" rel="noopener noreferrer">
+                  <Link
+                    href={groupLinks[stamp.id]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {circle}
                   </Link>
                 ) : (
@@ -118,7 +151,7 @@ export default function MainPage() {
 
       {/* Bottom Text */}
       <div
-        className={`text-center leading-snug text-lg sm:text-xl mt-4 mb-4 font-bold ${
+        className={`text-center leading-snug text-lg sm:text-xl mt-4 font-bold ${
           allClaimed ? "text-green-500" : "text-white"
         }`}
       >
