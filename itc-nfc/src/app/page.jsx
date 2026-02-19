@@ -59,9 +59,11 @@ export default function MainPage() {
       }
     }
 
-    // Only trigger grand confetti the moment all stamps collected
-    if (claimedCount === 7 && prevClaimedCount.current < 7) {
+    // Only trigger grand confetti the first time all stamps are collected
+    const grandPlayed = window.localStorage.getItem("grandConfettiPlayed");
+    if (claimedCount === 7 && prevClaimedCount.current < 7 && !grandPlayed) {
       playGrandConfetti();
+      window.localStorage.setItem("grandConfettiPlayed", "true");
       setTimeout(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 600);
