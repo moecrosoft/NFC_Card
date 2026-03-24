@@ -23,6 +23,7 @@ export default function MainPage() {
   const stampRefs = useRef([]);
   const bottomRef = useRef(null);
 
+  // Load stamps from localStorage on mount
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -44,29 +45,23 @@ export default function MainPage() {
   useEffect(() => {
     const claimedCount = stamps.filter((s) => s.image).length;
 
-    // Scroll to the newly claimed stamp
+    // Scroll to newly claimed stamp
     if (claimedCount > prevClaimedCount.current) {
-      const lastClaimed = stamps
-        .map((s, i) => ({ s, i }))
-        .filter(({ s }) => s.image)
-        .at(-1);
-
-      if (lastClaimed && stampRefs.current[lastClaimed.i]) {
-        stampRefs.current[lastClaimed.i].scrollIntoView({
+      const lastClaimedIndex = stamps.findIndex((s, i) => s.image && i >= prevClaimedCount.current);
+      if (lastClaimedIndex !== -1 && stampRefs.current[lastClaimedIndex]) {
+        stampRefs.current[lastClaimedIndex].scrollIntoView({
           behavior: "smooth",
           block: "center",
         });
       }
     }
 
-    // Only trigger grand confetti the first time all stamps are collected
+    // Trigger grand confetti on first time all stamps collected
     const grandPlayed = window.localStorage.getItem("grandConfettiPlayed");
-    if (claimedCount === 7 && prevClaimedCount.current < 7 && !grandPlayed) {
+    if (claimedCount === stamps.length && prevClaimedCount.current < stamps.length && !grandPlayed) {
       playGrandConfetti();
       window.localStorage.setItem("grandConfettiPlayed", "true");
-      setTimeout(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 600);
+      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 600);
     }
 
     prevClaimedCount.current = claimedCount;
@@ -75,7 +70,7 @@ export default function MainPage() {
   const allClaimed = stamps.every((s) => s.image);
 
   return (
-    <div className="w-screen min-h-[100dvh] bg-black flex flex-col items-center px-4 pt-6 pb-6 text-white">
+    <div className="w-screen min-h-[100dvh] bg-black flex flex-col items-center px-4 pt-6 pb-6 text-white overflow-y-auto">
       {/* Top */}
       <div className="flex items-center justify-center w-full max-w-md mb-4">
         <img src="/itc.png" className="h-16 w-16 rounded-xl object-cover" />

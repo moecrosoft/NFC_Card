@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 
 export default function GroupPage() {
   const router = useRouter();
   const [claimed, setClaimed] = useState(false);
+  const mainRef = useRef(null);
 
   const groupId = 6;
   const groupImage = `/stamps/${groupId}.png`;
@@ -21,6 +22,7 @@ export default function GroupPage() {
     7: ["#ec4899", "#f43f5e"],
   };
 
+  // Check if stamp already claimed
   useEffect(() => {
     const stored = window.localStorage.getItem("stamps");
     if (stored) {
@@ -46,18 +48,24 @@ export default function GroupPage() {
       colors: confettiColors[groupId] || ["#ffffff"],
     });
 
+    // Scroll main content into view before navigating back
+    mainRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+
     setTimeout(() => router.push("/"), 800);
   };
 
   return (
-    <div className="min-h-[100dvh] bg-black flex flex-col items-center justify-center px-6 text-white">
+    <div
+      ref={mainRef}
+      className="min-h-[100dvh] w-full bg-black flex flex-col items-center justify-center px-6 py-10 text-white overflow-y-auto"
+    >
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-red-600 mb-6">
         You received Group {groupId}
         <br />
         Stamp!
       </h1>
 
-      <div className="w-[45vw] max-w-[180px] aspect-square rounded-full overflow-hidden bg-gray-700 mb-6">
+      <div className="w-[45vw] max-w-[180px] aspect-square rounded-full overflow-hidden bg-gray-700 mb-6 flex-shrink-0">
         <img src={groupImage} alt={`Stamp ${groupId}`} className="w-full h-full object-cover" />
       </div>
 
