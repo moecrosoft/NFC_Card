@@ -73,7 +73,7 @@ export default function MainPage() {
     <div className="w-screen min-h-[100dvh] bg-black flex flex-col items-center px-4 pt-6 pb-6 text-white overflow-y-auto">
       {/* Top */}
       <div className="flex items-center justify-center w-full max-w-md mb-4">
-        <img src="/itc.png" className="h-16 w-16 rounded-xl object-cover" />
+        <img src="/itc_red.png" className="h-16 w-16 object-cover" />
         <div className="ml-3 text-center">
           <div className="text-2xl font-extrabold leading-tight text-red-600">
             ITC Project Showcase
