@@ -10,13 +10,13 @@ export default function MainPage() {
   );
 
   const groupLinks = {
-    1: "https://www.youtube.com",
-    2: "https://www.tiktok.com",
-    3: "https://www.tiktok.com",
-    4: "https://www.youtube.com",
+    1: "https://itc-simplify.vercel.app/",
+    2: "https://virtual-wardrobe-v2-a2c6.vercel.app/login",
+    3: "https://itc-group3-project.vercel.app",
+    4: "https://trippa.up.railway.app/",
     5: "https://crimsonmidnight.vercel.app/",
-    6: "https://www.youtube.com",
-    7: "https://www.youtube.com",
+    6: "https://noos-learning.vercel.app/lobby",
+    7: "https://strikef.vercel.app",
   };
 
   const prevClaimedCount = useRef(0);
@@ -122,7 +122,7 @@ export default function MainPage() {
       >
         Unlock 5 stamps → Go to Exco table
         <br />
-        → <span className="font-extrabold">Free Popcorn + Lucky Draw!</span>
+        → <span className="font-extrabold">Mixue + Lucky Draw!</span>
       </div>
     </div>
   );
